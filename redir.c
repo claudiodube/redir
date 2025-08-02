@@ -990,28 +990,7 @@ static int server_socket(char *addr, int port, int fail)
 		ERR("Failed setting socket option SO_KEEPALIVE: %s", strerror(errno));
 		exit(1);
 	}
-
-	/* Configure TCP keepalive parameters */
-	int keepidle = 60;    /* First probe after 60 seconds of inactivity */
-	rc = setsockopt(sd, IPPROTO_TCP, TCP_KEEPIDLE, &keepidle, sizeof(keepidle));
-	if (rc != 0) {
-		DBG("Warning: Failed setting TCP_KEEPIDLE: %s", strerror(errno));
-	}
-
-	int keepintvl = 300;  /* Probe interval: 5 minutes */
-	rc = setsockopt(sd, IPPROTO_TCP, TCP_KEEPINTVL, &keepintvl, sizeof(keepintvl));
-	if (rc != 0) {
-		DBG("Warning: Failed setting TCP_KEEPINTVL: %s", strerror(errno));
-	}
-
-	int keepcnt = 9;      /* Number of probes before giving up */
-	rc = setsockopt(sd, IPPROTO_TCP, TCP_KEEPCNT, &keepcnt, sizeof(keepcnt));
-	if (rc != 0) {
-		DBG("Warning: Failed setting TCP_KEEPCNT: %s", strerror(errno));
-	}
-
-	DBG("TCP keepalive enabled: idle=%ds, interval=%ds, count=%d", keepidle, keepintvl, keepcnt);
-
+        DBG("TCP keepalive enabled using system defaults");
 	/*
 	 * Try to bind the address to the socket.
 	 */
